@@ -1,0 +1,55 @@
+# 1. Test connectivity with ping (ALL 3 HOSTS)
+ansible all -m ping
+
+# 2. Check who I am on remote hosts (no sudo)
+ansible all -m command -a "whoami"
+
+# 3. Check uptime (ALL 3 HOSTS)
+ansible all -m command -a "uptime"
+
+# 4. Install packages with --become
+# Install nginx on web group only
+ansible web -m apt -a "name=nginx state=present update_cache=yes" --become
+
+# Install htop on all hosts
+ansible all -m apt -a "name=htop state=present" --become
+
+# 5. Start & enable nginx service on web group
+ansible web -m systemd -a "name=nginx state=started enabled=yes" --become
+
+# 6. Check nginx status on web group
+ansible web -m command -a "systemctl status nginx" --become
+
+# 7. Install different packages per group
+# MySQL client on app group
+ansible app -m apt -a "name=mysql-client state=present" --become
+
+# PostgreSQL client and server on db group
+ansible db -m apt -a "name=postgresql-client state=present" --become
+ansible db -m apt -a "name=postgresql state=present" --become
+
+# 8. Start database services
+ansible db -m systemd -a "name=postgresql state=started enabled=yes" --become
+
+# 9. Check disk usage (ALL 3 HOSTS)
+ansible all -m command -a "df -h"
+
+# 10. Check memory usage (ALL 3 HOSTS)
+ansible all -m command -a "free -m"
+
+# 11. Test web server on web group
+ansible web -m uri -a "url=http://localhost return_content=yes" --become
+
+# 12. Verify all services and packages
+ansible web -m command -a "nginx -v" --become
+ansible app -m command -a "mysql --version" --become
+ansible db -m command -a "psql --version" --become
+
+# 13. Check process status
+ansible all -m command -a "ps aux | head -10" --become
+
+# 14. Check network connectivity between VMs
+ansible all -m command -a "ping -c 2 10.0.1.4" --become
+
+# 15. Display hostnames
+ansible all -m command -a "hostname"
