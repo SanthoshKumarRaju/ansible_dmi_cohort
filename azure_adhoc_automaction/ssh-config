@@ -1,0 +1,17 @@
+Host vm0-web
+    HostName 52.191.54.181
+    User azureuser
+    IdentityFile ~/.ssh/id_rsa
+    StrictHostKeyChecking no
+
+Host vm1-app
+    HostName 172.191.46.31
+    User azureuser
+    IdentityFile ~/.ssh/id_rsa
+    StrictHostKeyChecking no
+
+Host vm2-db
+    HostName 172.191.124.66
+    User azureuser
+    IdentityFile ~/.ssh/id_rsa
+    StrictHostKeyChecking no
