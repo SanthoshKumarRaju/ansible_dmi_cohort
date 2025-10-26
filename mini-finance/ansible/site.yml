@@ -1,0 +1,114 @@
+---
+- name: Install and configure Nginx
+  hosts: web
+  become: yes
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Start and enable Nginx
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Wait for Nginx to be ready
+      wait_for:
+        port: 80
+        delay: 5
+        timeout: 30
+        state: started
+
+- name: Deploy mini finance website
+  hosts: web
+  become: yes
+  tasks:
+    - name: Install git
+      apt:
+        name: git
+        state: present
+
+    - name: Clone mini finance repository
+      git:
+        repo: 'https://github.com/pravinmishraaws/mini_finance.git'
+        dest: /tmp/mini-finance
+        version: main
+        force: yes
+
+    - name: Deploy website to Nginx root
+      copy:
+        src: /tmp/mini-finance/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        remote_src: yes
+
+    - name: Set proper permissions on web directory
+      file:
+        path: /var/www/html
+        owner: www-data
+        group: www-data
+        recurse: yes
+
+- name: Verify deployment and reload Nginx
+  hosts: web
+  become: yes
+  tasks:
+    - name: Reload Nginx gracefully
+      systemd:
+        name: nginx
+        state: reloaded
+
+    - name: Wait for Nginx after reload
+      wait_for:
+        port: 80
+        delay: 3
+        timeout: 10
+        state: started
+
+    - name: Verify HTTP response and content
+      uri:
+        url: "http://localhost"
+        method: GET
+        status_code: 200
+        return_content: yes  # THIS IS THE KEY FIX
+        timeout: 10
+      register: http_result
+
+    - name: Debug the actual content (for troubleshooting)
+      debug:
+        var: http_result.content
+      when: false  # Set to true if you need to see what content is returned
+
+    - name: Assert successful deployment
+      assert:
+        that:
+          - http_result.status == 200
+          - "'Mini Finance' in http_result.content"
+        fail_msg: |
+          Deployment verification failed!
+          Status: {{ http_result.status }}
+          Expected 'Mini Finance' in content but not found.
+          Actual content preview: {{ http_result.content[:100] }}...
+        success_msg: "✅ Website deployed successfully - HTTP 200 OK with correct content"
+
+    - name: Display final success message
+      debug:
+        msg: |
+          🎉 MINI FINANCE DEPLOYMENT SUCCESSFUL!
+          
+          ✅ Nginx installed and running
+          ✅ Git repository cloned successfully
+          ✅ Website deployed to /var/www/html
+          ✅ Nginx reloaded gracefully
+          ✅ HTTP Status: 200 OK
+          ✅ Content verified: 'Mini Finance' found
+          
+          🌐 Access your site: http://{{ ansible_host }}
