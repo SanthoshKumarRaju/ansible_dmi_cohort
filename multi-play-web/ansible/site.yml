@@ -1,0 +1,79 @@
+---
+- name: Play 1 - Prepare web servers (Install Apache and dependencies)
+  hosts: web
+  become: yes
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Apache2 web server
+      apt:
+        name: apache2
+        state: present
+
+    - name: Ensure Apache2 service is enabled and started
+      systemd:
+        name: apache2
+        enabled: yes
+        state: started
+
+    - name: Install curl (for verification)
+      apt:
+        name: curl
+        state: present
+
+    - name: Ensure firewall allows HTTP traffic
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+- name: Play 2 - Deploy static content to web servers
+  hosts: web
+  become: yes
+  tasks:
+    - name: Create web directory if it doesn't exist
+      file:
+        path: /var/www/html
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+    - name: Deploy index.html from controller to web servers
+      copy:
+        src: files/index.html
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+        backup: yes
+
+    - name: Restart Apache to ensure changes are loaded
+      systemd:
+        name: apache2
+        state: restarted
+
+- name: Play 3 - Verify deployment from controller
+  hosts: web
+  gather_facts: no
+  tasks:
+    - name: Verify web service is responding with deployed content
+      uri:
+        url: "http://{{ ansible_host }}/"
+        method: GET
+        status_code: 200
+        timeout: 30
+      register: webpage_result
+
+    - name: Display verification result
+      debug:
+        msg: "SUCCESS: Web server {{ ansible_host }} is responding correctly. Content deployed successfully."
+      when: webpage_result.status == 200
+
+    - name: Show failure message if verification fails
+      debug:
+        msg: "FAILED: Web server {{ ansible_host }} is not responding. HTTP Status: {{ webpage_result.status }}"
+      when: webpage_result.status != 200
