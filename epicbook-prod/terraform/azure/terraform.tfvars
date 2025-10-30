@@ -1,0 +1,8 @@
+resource_group_name = "epicbook-rg-new"
+location = "Central US"
+# mysql_location = "Central US"
+admin_username = "azureuser"
+ssh_public_key_path = "~/.ssh/id_rsa.pub"
+ssh_source_ip = "0.0.0.0/0"
+mysql_admin_username = "admin_s"
+mysql_admin_password = "YourSecurePassword123!"
