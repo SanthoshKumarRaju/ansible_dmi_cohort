@@ -1,0 +1,8 @@
+---
+mysql_host: "epicbook-mysql-g738.mysql.database.azure.com"
+mysql_user: "admin_s"
+mysql_password: "YourSecurePassword123!"
+mysql_database: "epicbook"
+app_port: 8080
+app_user: "azureuser"
+app_directory: "/home/azureuser/theepicbook"

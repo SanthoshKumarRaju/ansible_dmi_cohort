@@ -1,0 +1,56 @@
+---
+- name: Update apt package cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade system packages
+  apt:
+    upgrade: dist
+    autoremove: yes
+    autoclean: yes
+
+- name: Install baseline packages
+  apt:
+    name:
+      - curl
+      - wget
+      - git
+      - unzip
+      - mysql-client
+      - ca-certificates
+      - gnupg
+    state: present
+
+- name: Add NodeSource signing key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+
+- name: Add NodeSource repository for Node.js 18.x
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_18.x jammy main"
+    state: present
+    update_cache: yes
+
+- name: Install Node.js and npm
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+
+- name: Verify Node.js installation
+  command: node --version
+  register: node_version
+  changed_when: false
+
+- name: Verify npm installation
+  command: npm --version
+  register: npm_version
+  changed_when: false
+
+- name: Show Node.js and npm versions
+  debug:
+    msg:
+      - "Node.js version: {{ node_version.stdout }}"
+      - "npm version: {{ npm_version.stdout }}"

@@ -1,0 +1,18 @@
+[Unit]
+Description=EpicBook Application
+After=network.target
+
+[Service]
+Type=simple
+User={{ app_user }}
+WorkingDirectory={{ app_directory }}
+Environment=MYSQL_HOST={{ mysql_host }}
+Environment=MYSQL_USER={{ mysql_user }}
+Environment=MYSQL_PASSWORD={{ mysql_password }}
+Environment=MYSQL_DB={{ mysql_database }}
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

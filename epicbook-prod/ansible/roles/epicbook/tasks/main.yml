@@ -1,0 +1,134 @@
+---
+- name: Clone EpicBook repository to user home directory
+  git:
+    repo: https://github.com/pravinmishraaws/theepicbook.git
+    dest: "{{ app_directory }}"
+    version: main
+    force: yes
+
+- name: Install Node.js dependencies
+  npm:
+    path: "{{ app_directory }}"
+    state: present
+
+- name: Set environment variables for MySQL
+  lineinfile:
+    path: /home/{{ app_user }}/.bashrc
+    line: "export {{ item.key }}='{{ item.value }}'"
+    create: yes
+  loop:
+    - { key: "MYSQL_HOST", value: "{{ mysql_host }}" }
+    - { key: "MYSQL_USER", value: "{{ mysql_user }}" }
+    - { key: "MYSQL_DB", value: "{{ mysql_database }}" }
+
+- name: Check if database exists
+  shell:
+    cmd: mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} -e "SHOW DATABASES LIKE '{{ mysql_database }}';" | grep -q "{{ mysql_database }}" && echo "exists" || echo "not_exists"
+  args:
+    executable: /bin/bash
+  register: db_exists
+  changed_when: false
+
+- name: Create MySQL database if not exists
+  shell:
+    cmd: mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} -e "CREATE DATABASE IF NOT EXISTS {{ mysql_database }};"
+  args:
+    executable: /bin/bash
+  when: db_exists.stdout != "exists"
+
+- name: Check if tables exist
+  shell:
+    cmd: mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} {{ mysql_database }} -e "SHOW TABLES;" | grep -q -E "(author|book|cart)" && echo "exists" || echo "not_exists"
+  args:
+    executable: /bin/bash
+  register: tables_exist
+  changed_when: false
+
+- name: Clean SQL files (remove ALL bookstore references)
+  shell:
+    cmd: |
+      cd {{ app_directory }}/db/
+      # Remove all variations of bookstore references
+      sed -i 's/`bookstore`\.//g' *.sql
+      sed -i 's/bookstore\.//g' *.sql
+      sed -i 's/USE `bookstore`;/USE {{ mysql_database }};/g' *.sql
+      sed -i 's/USE bookstore;/USE {{ mysql_database }};/g' *.sql
+      sed -i 's/USE bookstore_db;/USE {{ mysql_database }};/g' *.sql
+  args:
+    executable: /bin/bash
+  when: tables_exist.stdout != "exists"
+
+- name: Import database schema if tables don't exist
+  shell:
+    cmd: mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} {{ mysql_database }} < {{ app_directory }}/db/BuyTheBook_Schema.sql
+  args:
+    executable: /bin/bash
+  when: tables_exist.stdout != "exists"
+  ignore_errors: yes
+
+- name: Import author data if tables exist
+  shell:
+    cmd: mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} {{ mysql_database }} < {{ app_directory }}/db/author_seed.sql
+  args:
+    executable: /bin/bash
+  ignore_errors: yes
+
+- name: Import books data if tables exist
+  shell:
+    cmd: mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} {{ mysql_database }} < {{ app_directory }}/db/books_seed.sql
+  args:
+    executable: /bin/bash
+  ignore_errors: yes
+
+- name: Verify database imports
+  shell:
+    cmd: |
+      mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} {{ mysql_database }} -e "SHOW TABLES;"
+      mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} {{ mysql_database }} -e "SELECT COUNT(*) as author_count FROM author;"
+      mysql -h {{ mysql_host }} -u {{ mysql_user }} -p{{ mysql_password }} {{ mysql_database }} -e "SELECT COUNT(*) as book_count FROM book;"
+  args:
+    executable: /bin/bash
+  register: db_verify
+  changed_when: false
+
+- name: Show database verification results
+  debug:
+    var: db_verify.stdout
+
+# - name: Create config directory
+#   file:
+#     path: "{{ app_directory }}/config"
+#     state: directory
+#     owner: "{{ app_user }}"
+#     group: "{{ app_user }}"
+#     mode: '0755'
+
+- name: Create database configuration file in config directory
+  template:
+    src: config.json.j2
+    dest: "{{ app_directory }}/config/config.json"
+    owner: "{{ app_user }}"
+    group: "{{ app_user }}"
+    mode: '0644'
+
+- name: Create systemd service for EpicBook
+  template:
+    src: epicbook.service.j2
+    dest: /etc/systemd/system/epicbook.service
+    mode: '0644'
+  notify:
+    - Reload systemd
+    - Restart EpicBook
+
+- name: Ensure EpicBook service is enabled and started
+  systemd:
+    name: epicbook
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+- name: Check if application is running on port 8080
+  wait_for:
+    port: 8080
+    host: localhost
+    timeout: 60
