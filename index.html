@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Guide: Ansible & Terraform Automation</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-cloud"></i>
+                <span>DevOps Guide</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#history">History</a></li>
+                <li><a href="#terraform">Terraform</a></li>
+                <li><a href="#ansible">Ansible</a></li>
+                <li><a href="#combination">Combination</a></li>
+                <li><a href="#commands">Commands</a></li>
+                <li><a href="#demo">Demo</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="title-gradient">Infrastructure as Code</span>
+                    <br>Complete Guide to Ansible & Terraform
+                </h1>
+                <p class="hero-description">
+                    Master infrastructure automation with comprehensive guides, real-world examples, 
+                    and practical tutorials. Learn how Terraform and Ansible work together to create 
+                    robust, scalable, and maintainable infrastructure.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">2014</span>
+                        <span class="stat-label">Terraform Born</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">2012</span>
+                        <span class="stat-label">Ansible Founded</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">100+</span>
+                        <span class="stat-label">Cloud Providers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>
+                    History & Evolution
+                </h2>
+                <p class="section-subtitle">The journey of Infrastructure as Code and configuration management tools</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">2012</div>
+                    <div class="timeline-content">
+                        <h3>Ansible Founded</h3>
+                        <p>Michael DeHaan created Ansible, naming it after the fictional faster-than-light communication system from Orson Scott Card's Ender's Game</p>
+                        <ul>
+                            <li>First release: Ansible 0.0.1</li>
+                            <li>Agentless architecture</li>
+                            <li>YAML-based playbooks</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2014</div>
+                    <div class="timeline-content">
+                        <h3>Terraform Born</h3>
+                        <p>HashiCorp introduced Terraform as the first multi-cloud infrastructure provisioning tool</p>
+                        <ul>
+                            <li>Declarative configuration language</li>
+                            <li>State management system</li>
+                            <li>Resource graph visualization</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2015</div>
+                    <div class="timeline-content">
+                        <h3>Red Hat Acquisition</h3>
+                        <p>Red Hat acquired Ansible, accelerating its enterprise adoption and development</p>
+                        <ul>
+                            <li>Ansible Tower introduced</li>
+                            <li>Enterprise features added</li>
+                            <li>Community growth</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2020+</div>
+                    <div class="timeline-content">
+                        <h3>Modern Era</h3>
+                        <p>Both tools became industry standards with extensive ecosystems</p>
+                        <ul>
+                            <li>Terraform 1.0 released</li>
+                            <li>Ansible Collections introduced</li>
+                            <li>Cloud-native integrations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terraform Section -->
+    <section id="terraform" class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-code"></i>
+                    Terraform Deep Dive
+                </h2>
+                <p class="section-subtitle">Infrastructure as Code with declarative configuration</p>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-text">
+                    <h3>Core Concepts</h3>
+                    <p>
+                        Terraform uses HashiCorp Configuration Language (HCL) to define and provision infrastructure 
+                        across multiple cloud providers and services.
+                    </p>
+
+                    <div class="concept-grid">
+                        <div class="concept-card">
+                            <i class="fas fa-file-code"></i>
+                            <h4>Configuration Files</h4>
+                            <p>.tf files containing resource definitions and variables</p>
+                        </div>
+                        <div class="concept-card">
+                            <i class="fas fa-database"></i>
+                            <h4>State Management</h4>
+                            <p>Terraform.tfstate tracks resource metadata and relationships</p>
+                        </div>
+                        <div class="concept-card">
+                            <i class="fas fa-project-diagram"></i>
+                            <h4>Resource Graph</h4>
+                            <p>Builds dependency graph for parallel operations</p>
+                        </div>
+                        <div class="concept-card">
+                            <i class="fas fa-plug"></i>
+                            <h4>Providers</h4>
+                            <p>Plugins that interact with APIs of cloud platforms</p>
+                        </div>
+                    </div>
+
+                    <h3>Key Features</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <div>
+                                <strong>Declarative Syntax</strong>
+                                <p>Describe desired state, Terraform handles implementation</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <div>
+                                <strong>Multi-Cloud & Hybrid</strong>
+                                <p>Support for AWS, Azure, GCP, Kubernetes, and 100+ providers</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <div>
+                                <strong>Plan & Apply</strong>
+                                <p>Preview changes before applying to infrastructure</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <div>
+                                <strong>Modular & Reusable</strong>
+                                <p>Create modules for reusable infrastructure patterns</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-code">
+                    <div class="code-header">
+                        <span>Complete Terraform Example</span>
+                        <button class="copy-btn" onclick="copyCode('terraform-code')">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <pre id="terraform-code"><code class="language-hcl"># main.tf - Complete AWS Infrastructure
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+
+  backend "s3" {
+    bucket = "my-terraform-state"
+    key    = "prod/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+# Provider Configuration
+provider "aws" {
+  region = var.aws_region
+  profile = "default"
+}
+
+# Variables
+variable "aws_region" {
+  description = "AWS region"
+  type        = string
+  default     = "us-east-1"
+}
+
+variable "instance_type" {
+  description = "EC2 instance type"
+  type        = string
+  default     = "t3.micro"
+}
+
+# Data Sources
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+}
+
+# VPC Resources
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+
+  tags = {
+    Name = "main-vpc"
+    Environment = "production"
+  }
+}
+
+# Internet Gateway
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "main-igw"
+  }
+}
+
+# Public Subnet
+resource "aws_subnet" "public" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.1.0/24"
+  availability_zone       = "us-east-1a"
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "public-subnet"
+  }
+}
+
+# Route Table
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+
+  tags = {
+    Name = "public-route-table"
+  }
+}
+
+# Security Group
+resource "aws_security_group" "web_sg" {
+  name        = "web-security-group"
+  description = "Allow web traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "web-sg"
+  }
+}
+
+# EC2 Instance
+resource "aws_instance" "web_server" {
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = var.instance_type
+  subnet_id              = aws_subnet.public.id
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+  key_name               = "my-keypair"
+
+  user_data = &lt;&lt;-EOF
+    #!/bin/bash
+    apt-get update
+    apt-get install -y nginx
+    systemctl start nginx
+    systemctl enable nginx
+    echo "&lt;h1&gt;Hello from Terraform!&lt;/h1&gt;" > /var/www/html/index.html
+  EOF
+
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp3"
+  }
+
+  tags = {
+    Name        = "web-server"
+    Environment = "production"
+    Project     = "terraform-demo"
+  }
+}
+
+# Outputs
+output "web_server_public_ip" {
+  description = "Public IP of web server"
+  value       = aws_instance.web_server.public_ip
+}
+
+output "web_server_public_dns" {
+  description = "Public DNS of web server"
+  value       = aws_instance.web_server.public_dns
+}
+
+output "vpc_id" {
+  description = "VPC ID"
+  value       = aws_vpc.main.id
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ansible Section -->
+    <section id="ansible" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-cogs"></i>
+                    Ansible Comprehensive Guide
+                </h2>
+                <p class="section-subtitle">Agentless automation for configuration management and application deployment</p>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-text">
+                    <h3>Architecture & Components</h3>
+                    <p>
+                        Ansible follows a simple, agentless architecture that uses SSH or WinRM to connect 
+                        to nodes and execute tasks defined in YAML playbooks.
+                    </p>
+
+                    <div class="architecture">
+                        <div class="arch-component">
+                            <i class="fas fa-laptop-code"></i>
+                            <h4>Control Node</h4>
+                            <p>Machine running Ansible with inventory and playbooks</p>
+                        </div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-component">
+                            <i class="fas fa-network-wired"></i>
+                            <h4>SSH/WinRM</h4>
+                            <p>Agentless communication protocol</p>
+                        </div>
+                        <div class="arch-arrow">→</div>
+                        <div class="arch-component">
+                            <i class="fas fa-server"></i>
+                            <h4>Managed Nodes</h4>
+                            <p>Target systems being configured</p>
+                        </div>
+                    </div>
+
+                    <h3>Core Components</h3>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <i class="fas fa-list"></i>
+                            <div>
+                                <strong>Inventory</strong>
+                                <p>Lists of managed hosts organized in groups</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-file-alt"></i>
+                            <div>
+                                <strong>Playbooks</strong>
+                                <p>YAML files defining automation tasks and workflows</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-puzzle-piece"></i>
+                            <div>
+                                <strong>Modules</strong>
+                                <p>Reusable units of work (package management, files, services)</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-users-cog"></i>
+                            <div>
+                                <strong>Roles</strong>
+                                <p>Collections of related playbooks, files, and templates</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Ansible Galaxy</h3>
+                    <p>Community repository for sharing and reusing Ansible roles and collections.</p>
+                    <ul>
+                        <li><strong>10,000+</strong> community roles available</li>
+                        <li><strong>50M+</strong> role downloads</li>
+                        <li>Quality scores and reviews</li>
+                    </ul>
+                </div>
+
+                <div class="content-code">
+                    <div class="code-header">
+                        <span>Complete Ansible Playbook</span>
+                        <button class="copy-btn" onclick="copyCode('ansible-code')">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                    <pre id="ansible-code"><code class="language-yaml">---
+# site.yml - Complete Web Application Deployment
+- name: Configure web servers
+  hosts: webservers
+  become: yes
+  vars:
+    app_name: "my-webapp"
+    web_root: "/var/www/{{ app_name }}"
+    db_host: "{{ groups['dbservers'][0] }}"
+    domain_name: "example.com"
+    
+  pre_tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == 'Debian'
+
+  roles:
+    - role: nginx
+    - role: nodejs
+    - role: postgresql
+
+  tasks:
+    - name: Create application user
+      user:
+        name: "{{ app_name }}"
+        system: yes
+        create_home: yes
+        shell: /bin/bash
+
+    - name: Create web directory structure
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ app_name }}"
+        group: "{{ app_name }}"
+        mode: '0755'
+      loop:
+        - "{{ web_root }}"
+        - "{{ web_root }}/logs"
+        - "{{ web_root }}/config"
+
+    - name: Deploy application code
+      git:
+        repo: "https://github.com/example/{{ app_name }}.git"
+        dest: "{{ web_root }}/app"
+        version: "main"
+        update: yes
+
+    - name: Install Node.js dependencies
+      npm:
+        path: "{{ web_root }}/app"
+        production: yes
+      environment:
+        NODE_ENV: production
+
+    - name: Configure nginx virtual host
+      template:
+        src: templates/nginx.conf.j2
+        dest: /etc/nginx/sites-available/{{ app_name }}
+        mode: '0644'
+      notify: restart nginx
+
+    - name: Enable nginx site
+      file:
+        src: /etc/nginx/sites-available/{{ app_name }}
+        dest: /etc/nginx/sites-enabled/{{ app_name }}
+        state: link
+      notify: restart nginx
+
+    - name: Setup application environment
+      template:
+        src: templates/.env.j2
+        dest: "{{ web_root }}/app/.env"
+        mode: '0644'
+
+    - name: Install PM2 process manager
+      npm:
+        name: pm2
+        global: yes
+        production: yes
+
+    - name: Start application with PM2
+      command:
+        cmd: "pm2 start {{ web_root }}/app/server.js --name {{ app_name }}"
+        chdir: "{{ web_root }}/app"
+      environment:
+        NODE_ENV: production
+
+    - name: Setup PM2 startup script
+      command: pm2 startup
+      ignore_errors: yes
+
+    - name: Setup application monitoring
+      cron:
+        name: "Check application health"
+        minute: "*/5"
+        job: "curl -f http://localhost:3000/health || pm2 restart {{ app_name }}"
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: nginx
+        state: restarted
+        enabled: yes
+
+    - name: reload nginx
+      service:
+        name: nginx
+        state: reloaded
+
+    - name: restart application
+      command: pm2 restart {{ app_name }}
+
+- name: Configure database servers
+  hosts: dbservers
+  become: yes
+  vars:
+    postgresql_version: 14
+    databases:
+      - name: "{{ app_name }}"
+        owner: "{{ app_name }}_user"
+
+  tasks:
+    - name: Install PostgreSQL
+      apt:
+        name: "postgresql-{{ postgresql_version }}"
+        state: present
+
+    - name: Ensure PostgreSQL is running
+      service:
+        name: "postgresql@{{ postgresql_version }}-main"
+        state: started
+        enabled: yes
+
+    - name: Create application database
+      postgresql_db:
+        name: "{{ item.name }}"
+        owner: "{{ item.owner }}"
+      loop: "{{ databases }}"
+
+    - name: Create database user
+      postgresql_user:
+        name: "{{ app_name }}_user"
+        password: "{{ vault_db_password }}"
+        encrypted: yes
+        role_attr_flags: "CREATEDB,LOGIN"
+
+- name: Deploy to production
+  hosts: webservers:&dbservers
+  tasks:
+    - name: Send deployment notification
+      slack:
+        token: "{{ slack_token }}"
+        msg: "Deployment of {{ app_name }} completed successfully!"
+        channel: "#deployments"
+      delegate_to: localhost
+      run_once: yes</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section id="commands" class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-terminal"></i>
+                    Essential Commands & Workflows
+                </h2>
+                <p class="section-subtitle">Master the command-line interface for both tools</p>
+            </div>
+
+            <div class="commands-grid">
+                <div class="command-category">
+                    <h3><i class="fab fa-terraform"></i> Terraform Commands</h3>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <code>terraform init</code>
+                            <p>Initialize working directory with providers and modules</p>
+                        </div>
+                        <div class="command-item">
+                            <code>terraform plan</code>
+                            <p>Preview changes before applying</p>
+                        </div>
+                        <div class="command-item">
+                            <code>terraform apply</code>
+                            <p>Apply changes to reach desired state</p>
+                        </div>
+                        <div class="command-item">
+                            <code>terraform destroy</code>
+                            <p>Destroy all managed infrastructure</p>
+                        </div>
+                        <div class="command-item">
+                            <code>terraform fmt</code>
+                            <p>Format configuration files</p>
+                        </div>
+                        <div class="command-item">
+                            <code>terraform validate</code>
+                            <p>Validate configuration syntax</p>
+                        </div>
+                        <div class="command-item">
+                            <code>terraform state list</code>
+                            <p>List resources in state file</p>
+                        </div>
+                        <div class="command-item">
+                            <code>terraform output</code>
+                            <p>Show output values</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="command-category">
+                    <h3><i class="fab fa-ansible"></i> Ansible Commands</h3>
+                    <div class="command-list">
+                        <div class="command-item">
+                            <code>ansible-playbook playbook.yml</code>
+                            <p>Run an Ansible playbook</p>
+                        </div>
+                        <div class="command-item">
+                            <code>ansible all -m ping</code>
+                            <p>Test connectivity to all hosts</p>
+                        </div>
+                        <div class="command-item">
+                            <code>ansible-doc module_name</code>
+                            <p>Show documentation for a module</p>
+                        </div>
+                        <div class="command-item">
+                            <code>ansible-vault create file.yml</code>
+                            <p>Create encrypted file</p>
+                        </div>
+                        <div class="command-item">
+                            <code>ansible-galaxy init role_name</code>
+                            <p>Initialize new role structure</p>
+                        </div>
+                        <div class="command-item">
+                            <code>ansible-inventory --list</code>
+                            <p>Show inventory in JSON format</p>
+                        </div>
+                        <div class="command-item">
+                            <code>ansible-playbook --check</code>
+                            <p>Dry run without making changes</p>
+                        </div>
+                        <div class="command-item">
+                            <code>ansible-playbook --syntax-check</code>
+                            <p>Check playbook syntax</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-examples">
+                <h3>Common Workflows</h3>
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <h4>Infrastructure Deployment</h4>
+                        <div class="workflow-steps">
+                            <div class="step">1. terraform init</div>
+                            <div class="step">2. terraform plan</div>
+                            <div class="step">3. terraform apply</div>
+                            <div class="step">4. ansible-playbook</div>
+                        </div>
+                    </div>
+                    <div class="workflow-card">
+                        <h4>Continuous Deployment</h4>
+                        <div class="workflow-steps">
+                            <div class="step">1. Git push</div>
+                            <div class="step">2. CI/CD pipeline</div>
+                            <div class="step">3. Terraform apply</div>
+                            <div class="step">4. Ansible deploy</div>
+                        </div>
+                    </div>
+                    <div class="workflow-card">
+                        <h4>Disaster Recovery</h4>
+                        <div class="workflow-steps">
+                            <div class="step">1. terraform destroy</div>
+                            <div class="step">2. terraform apply</div>
+                            <div class="step">3. ansible restore</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Combination Section -->
+    <section id="combination" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-magic"></i>
+                    Powerful Combination
+                </h2>
+                <p class="section-subtitle">Leveraging Terraform and Ansible together for complete infrastructure automation</p>
+            </div>
+
+            <div class="integration-patterns">
+                <h3>Integration Patterns</h3>
+                <div class="pattern-grid">
+                    <div class="pattern-card">
+                        <h4>Sequential Execution</h4>
+                        <p>Terraform creates infrastructure, then Ansible configures it</p>
+                        <code>terraform apply && ansible-playbook</code>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>Dynamic Inventory</h4>
+                        <p>Terraform outputs feed into Ansible dynamic inventory</p>
+                        <code>terraform output -json > inventory.json</code>
+                    </div>
+                    <div class="pattern-card">
+                        <h4>CI/CD Pipeline</h4>
+                        <p>Both tools integrated in automated deployment pipelines</p>
+                        <code>Jenkins/GitLab CI → Terraform → Ansible</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="best-practices">
+                <h3>Best Practices</h3>
+                <div class="practices-grid">
+                    <div class="practice-item">
+                        <i class="fas fa-code-branch"></i>
+                        <h4>Version Control</h4>
+                        <p>Store all code in Git with proper branching strategies</p>
+                    </div>
+                    <div class="practice-item">
+                        <i class="fas fa-lock"></i>
+                        <h4>Security</h4>
+                        <p>Use secrets management and least privilege principles</p>
+                    </div>
+                    <div class="practice-item">
+                        <i class="fas fa-tasks"></i>
+                        <h4>Modularity</h4>
+                        <p>Create reusable modules and roles</p>
+                    </div>
+                    <div class="practice-item">
+                        <i class="fas fa-file-alt"></i>
+                        <h4>Documentation</h4>
+                        <p>Maintain README files and inline comments</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-laptop-code"></i>
+                    Hands-On Demo
+                </h2>
+                <p class="section-subtitle">Complete example: Deploying a web application with database backend</p>
+            </div>
+
+            <div class="demo-steps">
+                <div class="step-card">
+                    <div class="step-header">
+                        <span class="step-number">01</span>
+                        <h4>Infrastructure Definition</h4>
+                    </div>
+                    <p>Define VPC, subnets, security groups, and EC2 instances using Terraform</p>
+                    <div class="step-tech">
+                        <span class="tech-tag">Terraform</span>
+                        <span class="tech-tag">AWS</span>
+                        <span class="tech-tag">VPC</span>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <span class="step-number">02</span>
+                        <h4>Application Deployment</h4>
+                    </div>
+                    <p>Use Ansible to install dependencies, configure web servers, and deploy application code</p>
+                    <div class="step-tech">
+                        <span class="tech-tag">Ansible</span>
+                        <span class="tech-tag">Nginx</span>
+                        <span class="tech-tag">Node.js</span>
+                    </div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-header">
+                        <span class="step-number">03</span>
+                        <h4>Database Setup</h4>
+                    </div>
+                    <p>Configure database servers and create databases</p>
+                    <div class="step-tech">
+                        <span class="tech-tag">PostgreSQL</span>
+                        <span class="tech-tag">Ansible Roles</span>
+                        <span class="tech-tag">Security</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h3>Ready to Automate Your Infrastructure?</h3>
+                <p>Start your journey with Terraform and Ansible today and transform your deployment process</p>
+                <div class="cta-buttons">
+                    <button class="btn btn-primary" onclick="window.open('https://terraform.io', '_blank')">
+                        <i class="fas fa-code"></i>
+                        Learn Terraform
+                    </button>
+                    <button class="btn btn-secondary" onclick="window.open('https://ansible.com', '_blank')">
+                        <i class="fas fa-cogs"></i>
+                        Learn Ansible
+                    </button>
+                    <button class="btn btn-accent" onclick="window.open('https://github.com', '_blank')">
+                        <i class="fab fa-github"></i>
+                        View Examples
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>DevOps Automation Guide</h4>
+                    <p>Master infrastructure automation with Terraform and Ansible. Build reliable, scalable, and maintainable systems.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://terraform.io/docs">Terraform Documentation</a></li>
+                        <li><a href="https://docs.ansible.com">Ansible Documentation</a></li>
+                        <li><a href="https://github.com/terraform-aws-modules">Terraform AWS Modules</a></li>
+                        <li><a href="https://galaxy.ansible.com">Ansible Galaxy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="https://discuss.hashicorp.com">Terraform Forums</a></li>
+                        <li><a href="https://groups.google.com/g/ansible-project">Ansible Mailing List</a></li>
+                        <li><a href="https://stackoverflow.com/questions/tagged/terraform">Stack Overflow</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DevOps Automation Guide. Built with ❤️ for the DevOps community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
